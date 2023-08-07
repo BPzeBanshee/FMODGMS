@@ -1,7 +1,7 @@
 /*--------------------------------------------------------
 //  fmodgms.hpp
 //
-//  FMODGMS v.0.10.0
+//  FMODGMS v.0.10.1
 //
 //  GML bindings to the FMOD Studio low-level API for
 //  GameMaker:Studio.
@@ -14,7 +14,12 @@
 
 #include "kissfft/kiss_fftr.h"
 
+#ifdef _WIN32
 #define GMexport extern "C" __declspec (dllexport)
+#else
+#define GMexport extern "C"
+#endif
+
 #define GMS_true 1
 #define GMS_false 0
 #define GMS_error -1;
@@ -52,6 +57,7 @@ GMexport double FMODGMS_Snd_Unload(double index);
 GMexport double FMODGMS_Snd_PlaySound(double index, double channel);
 GMexport double FMODGMS_Snd_Set_DLS(char* filename);
 GMexport double FMODGMS_Snd_Remove_DLS();
+GMexport double FMODGMS_Snd_Set_DecodeBufferSize(double size);
 GMexport double FMODGMS_Snd_Set_LoopMode(double index, double mode, double times);
 GMexport double FMODGMS_Snd_Set_LoopPoints(double index, double startTimeInSamples, double endTimeInSamples);
 GMexport double FMODGMS_Snd_Set_ModChannelVolume(double index, double modChannel, double vol);

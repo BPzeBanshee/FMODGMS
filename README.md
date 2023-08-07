@@ -11,13 +11,7 @@ A ***GameMaker: Studio* and *GameMaker Studio 2* extension** that provides **GML
 
 ## **Status**
 
-### Note: 
-
-The project is on hold for the time being. Work on this project is mainly done by me and I don't have as much time as I did in the past to maintain, add features, and keep up with the development of FMOD Studio. There might be a time when I'll come back to work on this, but I'm not certain when that will be.
-
-If you want to contribute to the project, feel free to create a pull request. I would like to thank [Gitle Mikkelsen (Grix)](https://github.com/Grix), [rissole](https://github.com/rissole), and [BPzeBanshee](https://github.com/BPzeBanshee) for their past contributions to the project.
-
-### **Latest - [0.10.0](https://github.com/mstop4/FMODGMS/tree/v0100)**
+### **Latest - [0.10.1](https://github.com/mstop4/FMODGMS/tree/v0.10.1)**
 * *Platform coverage:*
 
 |              | Windows | macOS | Ubuntu |
@@ -27,11 +21,11 @@ If you want to contribute to the project, feel free to create a pull request. I 
 | GMS 2.1 VM   |✔️      |⚠️<sup>1</sup>    | ✔️     |
 | GMS 2.1 YYC |✔️      |✔️     | ✔️     |
 
-<sub>1. Works with "Create Executable" only, not "Run" or "Debug"
+<sub>1. Works with "Create Executable" only, not "Run" or "Debug"</sub>
 
-* *FMOD Studio API:* 1.10.07
+* *FMOD Studio API:* 1.10.08
 * *GMS 2 Runtime:* v.2.1.5.246
-* *GM:S Runtime:* v.1.4.1804
+* *GM:S Runtime:* v.1.4.9999
 
 ### **Stable - [0.9.1](https://github.com/mstop4/FMODGMS/releases/tag/v0.9.1)**
 * *Platform coverage*:
@@ -68,14 +62,15 @@ What's inside
 - **FMODGMS_Demo_linux.tar.gz** - FMODGMS player demo for Linux
 - **FMODGMS_Starter.yyz** - A minimal FMODGMS project for GMS 2.
 - **FMODGMS_Starter.gmz** - A minimal FMODGMS project for GM:S 1.4.
-- **src** - library, player demo, and unpackage starter project source code
+- **src** - Library, player demo, and unpackage starter project source code
+  - *code* - Library source code
   - *gms/FMODGMS Test.gmx* - GM:S 1.4 project for player demo
   - *gms/FMODGMS Starter.gmx* - GM:S 1.4 starter project
   - *gms2/FMODGMS Test* - GMS 2 project for player demo
   - *gms2/FMODGMS Starter* - GMS 2 starter project
-  - *linux* - FMODGMS source for Linux
-  - *xcode* - Xcode project for macOS. Shares code with Linux.
-  - *vc/FMODGMS* - FMODGMS source for Windows as a Visual Studio project
+  - *linux* - Scripts for building Linux library.
+  - *xcode* - Xcode project for macOS.
+  - *vc/FMODGMS* - Visual Studio project for Windows.
 
 Basic Usage
 --------
@@ -85,7 +80,7 @@ Basic Usage
 if (FMODGMS_Util_Handshake() == "FMODGMS is working.")
     show_message_async("Success! FMODGMS has been loaded.");
 else {
-    show_message_async("Error! FMODGMS was not loaded properly.");
+    show_message_async("Error! FMODGMS was not loaded prorperly.");
     exit;
 }
 
@@ -119,4 +114,3 @@ Contributors
 * [M.S.T.O.P. (mstop4)](https://github.com/mstop4)
 * [Gitle Mikkelsen (Grix)](https://github.com/Grix)
 * [rissole](https://github.com/rissole)
-* [BPzeBanshee](https://github.com/BPzeBanshee)
