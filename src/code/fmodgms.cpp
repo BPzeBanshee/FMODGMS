@@ -1,12 +1,12 @@
 /*--------------------------------------------------------
 //  fmodgms.cpp
 //
-//  FMODGMS v.0.10.1
+//  FMODGMS v.0.11
 //
 //  GML bindings to the FMOD Studio low-level API for
 //  GameMaker:Studio.
 //
-//  FMOD Studio version: 1.10.07
+//  FMOD Studio version: 2.02.16
 ----------------------------------------------------------*/
 
 #ifndef FMODGMS_CPP
@@ -247,10 +247,13 @@ GMexport double FMODGMS_Sys_Get_SampleRate()
 // Gets the total CPU usage
 GMexport double FMODGMS_Sys_Get_CPUUsage()
 {
-	float totalCPU;
-	sys->getCPUUsage(0, 0, 0, 0, &totalCPU);
-
-	return totalCPU;
+	//float totalCPU;
+	FMOD_CPU_USAGE totalCPU;
+	// 1.10.7 used 5 args and floats, modern FMOD uses structs
+	//sys->getCPUUsage(0, 0, 0, 0, &totalCPU);
+	sys->getCPUUsage(&totalCPU);
+	float result = totalCPU.update;
+	return (double)result;
 }
 
 // Gets the system's output type
@@ -431,7 +434,7 @@ GMexport double FMODGMS_Snd_LoadSound(char* filename)
 		return GMS_error;
 }
 
-// Loads a sound toa stream and indexes it in soundList
+// Loads a sound to a stream and indexes it in soundList
 GMexport double FMODGMS_Snd_LoadStream(char* filename)
 {
 	FMOD::Sound *sound;
@@ -469,7 +472,7 @@ GMexport double FMODGMS_Snd_LoadSound_Ext(char* location, double mode, uint64_t*
 	//if exInfo is used, transfer data to struct and pass to createSound
 	if (exInfo != 0)
 	{
-		FMOD_CREATESOUNDEXINFO _exInfo;
+		FMOD_CREATESOUNDEXINFO _exInfo{};
 		_exInfo.cbsize = (int)sizeof(_exInfo);
 		_exInfo.length = (unsigned int)exInfo[0];
 		_exInfo.fileoffset = (unsigned int)exInfo[1];
@@ -498,7 +501,7 @@ GMexport double FMODGMS_Snd_LoadSound_Ext(char* location, double mode, uint64_t*
 		_exInfo.fileuserdata = (void*)exInfo[24];
 		_exInfo.filebuffersize = (int)exInfo[25];
 		_exInfo.channelorder = (FMOD_CHANNELORDER)exInfo[26];
-		_exInfo.channelmask = (FMOD_CHANNELMASK)exInfo[27];
+		//_exInfo.channelmask = (FMOD_CHANNELMASK)exInfo[27];
 		_exInfo.initialsoundgroup = 0; //not supported
 		_exInfo.initialseekposition = (unsigned int)exInfo[29];
 		_exInfo.initialseekpostype = (FMOD_TIMEUNIT)exInfo[30];
@@ -1882,7 +1885,7 @@ GMexport const char* FMODGMS_Snd_Get_TagStringFromIndex(double soundIndex, doubl
 			FMOD_TAG tag;
 			soundList[si]->getTag(0, ti, &tag);
 
-			if (tag.datatype >= FMOD_TAGDATATYPE_STRING && tag.datatype < FMOD_TAGDATATYPE_CDTOC)
+			if (tag.datatype >= FMOD_TAGDATATYPE_STRING && tag.datatype < FMOD_TAGDATATYPE_MAX)
 			{
 				// 8-bit string
 				if (tag.datatype == FMOD_TAGDATATYPE_STRING || tag.datatype == FMOD_TAGDATATYPE_STRING_UTF8)
@@ -2120,9 +2123,9 @@ GMexport const char* FMODGMS_Snd_Get_TagStringFromName(double soundIndex, char* 
 
 		if (tagFound)
 		{
-			if (tag.datatype >= FMOD_TAGDATATYPE_STRING && tag.datatype < FMOD_TAGDATATYPE_CDTOC)
+			if (tag.datatype >= FMOD_TAGDATATYPE_STRING && tag.datatype < FMOD_TAGDATATYPE_MAX)
 			{
-				if (tag.datatype >= FMOD_TAGDATATYPE_STRING && tag.datatype < FMOD_TAGDATATYPE_CDTOC)
+				if (tag.datatype >= FMOD_TAGDATATYPE_STRING && tag.datatype < FMOD_TAGDATATYPE_MAX)
 				{
 					// 8-bit string
 					if (tag.datatype == FMOD_TAGDATATYPE_STRING || tag.datatype == FMOD_TAGDATATYPE_STRING_UTF8)
@@ -2431,7 +2434,7 @@ GMexport double FMODGMS_Util_FFT(float* bufferIn, float* bufferOut, double numPo
 
 	//apply hann window (and measure loudness)
 	double loudness = 0;
-	float bufferInTemp[4096];
+	float bufferInTemp[4096]{};
 	for (int i = 0; i < _numPoints; i++)
 	{
 		bufferInTemp[i] = bufferIn[i] * powf(sinf((float)3.141592*i / (_numPoints - 1)), 2);
